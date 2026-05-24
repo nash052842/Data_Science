@@ -6,73 +6,67 @@ import streamlit as st
 st.title("Hello")
 
 
+import streamlit as st
+
 class Preditors:
-    def __init__(self,name, shape, size, colour, aggressive):
+    def __init__(self, name, shape, size, colour, aggressive):
         self.name = name
         self.shape = shape
         self.size = size
         self.colour = colour
         self.aggressive = aggressive
 
-def predict():
-    pass
 
 def get_monty_attributes():
-    name = "Monty"
-    size = "big"
-    shape = "elongated"
-    aggressive = True
-    colour = "brown"
-    return {"name": name, "size": size, "colour": colour, "shape": shape, "aggressive": aggressive}
+    return {
+        "name": "Monty",
+        "size": "big",
+        "shape": "elongated",
+        "aggressive": True,
+        "colour": "brown"
+    }
+
 
 def get_calif_attributes():
-    name = "Calif"
-    size = "small"
-    shape = "rounded"
-    aggressive = False
-    colour = "grey"
-    return {"name": name, "size": size, "colour": colour, "shape": shape, "aggressive": aggressive}
+    return {
+        "name": "Calif",
+        "size": "small",
+        "shape": "rounded",
+        "aggressive": False,
+        "colour": "grey"
+    }
 
-calif_attributes = get_calif_attributes()
-monty_attributes = get_monty_attributes()
 
-calif = Preditors(**calif_attributes)
-monty = Preditors(**monty_attributes)
+# Create objects
+calif = Preditors(**get_calif_attributes())
+monty = Preditors(**get_monty_attributes())
 
 predators = [calif, monty]
-predator_by_name = {"calif": calif, "monty": monty}
 
-search_size = input("Enter predator size (e.g., big, small): ").lower()
-search_shape = input("Enter the shape of the predator (e.g., elongated, rounded): ").lower()
-search_colour = input("Enter the colour of the predator (e.g., brown, grey): ").lower()
-search_aggressive = input("Is the predator aggressive? (yes/no): ").lower()
+# UI
+st.title("🐍 Predator Finder App")
 
-search_aggressive_str = search_aggressive
-search_aggressive = False
-if search_aggressive_str == "yes":
-    search_aggressive = True
+search_size = st.text_input("Enter predator size (big/small)").lower()
+search_shape = st.text_input("Enter shape (elongated/rounded)").lower()
+search_colour = st.text_input("Enter colour (brown/grey)").lower()
+search_aggressive = st.selectbox("Aggressive?", ["yes", "no"])
 
-user_search_criteria = {
-    "size": search_size,
-    "shape": search_shape,
-    "colour": search_colour,
-    "aggressive": search_aggressive,
-}
-print(f"User search criteria: {user_search_criteria}")
+search_aggressive_bool = search_aggressive == "yes"
 
-found_predator = None
-for predator in predators:
-    if (
-        predator.size == search_size
-        and predator.shape == search_shape
-        and predator.colour == search_colour
-        and predator.aggressive == search_aggressive
-    ):
-        found_predator = predator
-        break
+if st.button("Search"):
+    found_predator = None
 
+    for predator in predators:
+        if (
+            predator.size == search_size
+            and predator.shape == search_shape
+            and predator.colour == search_colour
+            and predator.aggressive == search_aggressive_bool
+        ):
+            found_predator = predator
+            break
 
-if found_predator:
-    print(f"\nIdentified Predator: {found_predator.name}")
-else:
-    print("\nNo predator found matching the provided criteria.")
+    if found_predator:
+        st.success(f"Identified Predator: {found_predator.name}")
+    else:
+        st.error("No predator found matching the provided criteria.")
