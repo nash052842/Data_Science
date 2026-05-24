@@ -1,3 +1,8 @@
+import pandas as pd
+import numpy as np
+import streamlit as st
+
+
 class Preditors:
     def __init__(self,name, shape, size, colour, aggressive):
         self.name = name
