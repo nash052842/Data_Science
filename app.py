@@ -9,7 +9,7 @@ st.title("Hello")
 import streamlit as st
 
 # ---------------- UI HEADER ----------------
-st.title("🐛 Predator Finder & Analysis App")
+st.title("🕷️ Predator Finder & Analysis App")
 st.write("Find and analyze predator types based on attributes.")
 
 # ---------------- CLASS ----------------
