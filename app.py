@@ -44,7 +44,7 @@ monty = Preditors(**get_monty_attributes())
 predators = [calif, monty]
 
 # UI
-st.title("🐍 Predator Finder App")
+st.title("🕷️ Predator Finder & Analysis App")
 
 search_size = st.text_input("Enter predator size (big/small)").lower()
 search_shape = st.text_input("Enter shape (elongated/rounded)").lower()
