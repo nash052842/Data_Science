@@ -1,6 +1,3 @@
-from turtle import speed
-
-from numpy import tan
 import streamlit as st
 
 st.title("🕷️ Predator Finder & Analysis App")
@@ -14,16 +11,17 @@ if not st.session_state.submitted:
 
     st.subheader("🔎 Enter Search Criteria")
 
-    search_size = st.selectbox("Size", ["small", "big"])
-    search_shape = st.selectbox("Shape", ["rounded", "elongated"])
-    search_colour = st.selectbox("Colour", ["grey", "brown"])
-    search_aggressive = st.selectbox("Aggressive?", ["yes", "no"])
+    # IMPORTANT: match values with dataset exactly
+    search_size = st.selectbox("Size", ["small", "medium", "big"])
+    search_shape = st.selectbox("Shape", ["pear_shaped", "oval_to_teardrop", "broad_oval", "oval_slender"])
+    search_colour = st.selectbox("Colour", ["grey", "light_tan", "beige_tan", "cream_tan"])
+    search_aggressive = st.selectbox("Aggressive?", ["True", "False"])
 
     if st.button("Find Predator"):
         st.session_state.search_size = search_size
         st.session_state.search_shape = search_shape
         st.session_state.search_colour = search_colour
-        st.session_state.search_aggressive = (search_aggressive == "yes")
+        st.session_state.search_aggressive = (search_aggressive == "True")
         st.session_state.submitted = True
         st.rerun()
 
@@ -31,121 +29,92 @@ if not st.session_state.submitted:
 else:
     st.subheader("📊 Result")
 
-    class Preditors:
-        def __init__(self, name, shape, size, colour, aggressive,development_speed,Moderate,High,BeigeTan,Reproduction_rate,Pale_transparent,Light_tan,Pear_shaped,Oval_to_teardrop,Broad_oval,Oval_slender):
+    # ---------------- CLASS ----------------
+    class Predator:
+        def __init__(self, name, size, shape, colour, aggressive, development_speed):
             self.name = name
-            self.shape = shape
             self.size = size
+            self.shape = shape
             self.colour = colour
             self.aggressive = aggressive
-            self.speed = development_speed
-            self.Moderate = Moderate
-            self.High = High    
-            self.Beige_Tan = BeigeTan
-            self.Reproduction_rate = Reproduction_rate
-            self.Pale_transparent = Pale_transparent
-            self.Light_tan = Light_tan  
-            self.Pear_shaped = Pear_shaped
-            self.Oval_to_teardrop = Oval_to_teardrop    
-            self.Broad_oval = Broad_oval
-            self.Oval_slender = Oval_slender
+            self.development_speed = development_speed
 
-    def get_monty_attributes():
-        return {
-            "name": "Monty",
-            "size": "medium",
-            "shape": "oval_slender",
-            "colour": "creamy_tan",
-            "aggressive": True,
-            "development_speed": "Fast"
-        }
+    # ---------------- DATA ----------------
+    def get_calif():
+        return Predator(
+            "Neoseiulus californicus",
+            "medium",
+            "oval_to_teardrop",
+            "grey",
+            False,
+            "moderate"
+        )
 
-    def get_calif_attributes():
-        return {
-            "name": "Calif",
-            "size": "medium",
-            "shape": "oval_to_teardrop",
-            "colour": "grey",
-            "aggressive": False,
-            "development_speed": "moderate"
-        }
+    def get_monty():
+        return Predator(
+            "Typhlodromips montdorensis",
+            "medium",
+            "oval_slender",
+            "cream_tan",
+            True,
+            "fast"
+        )
 
-    def get_cucumeris_attributes():
-        return {
-            "name": "Cucumeris",
-            "size": "medium",
-            "shape": "pear_shaped",
-            "colour": "light_tan",
-            "aggressive": False,
-            "development_speed": "Moderate",
-            "colour": "beige_tan",
-        }
+    def get_cucumeris():
+        return Predator(
+            "Amblyseius cucumeris",
+            "medium",
+            "pear_shaped",
+            "beige_tan",
+            False,
+            "moderate"
+        )
 
-    def get_swirskii_attributes():
-        return {
-            "name": "Swirskii",
-            "size": "medium",
-            "shape": "broad_oval",
-            "colour": "light_tan",
-            "aggressive": True,
-            "development_speed": "Fast"
-        }
-    calif = Preditors(**get_calif_attributes())
-    monty = Preditors(**get_monty_attributes())
-    cucumeris = Preditors(**get_cucumeris_attributes())
-    swirskii = Preditors(**get_swirskii_attributes())
+    def get_swirskii():
+        return Predator(
+            "Amblyseius swirskii",
+            "medium",
+            "broad_oval",
+            "light_tan",
+            True,
+            "fast"
+        )
 
-    predators = [calif, monty, cucumeris, swirskii]
+    predators = [
+        get_calif(),
+        get_monty(),
+        get_cucumeris(),
+        get_swirskii()
+    ]
 
-    found_predator = None
+    # ---------------- SEARCH ----------------
+    found = None
 
-    for predator in predators:
+    for p in predators:
         if (
-            predator.size == st.session_state.search_size
-            and predator.shape == st.session_state.search_shape
-            and predator.colour == st.session_state.search_colour
-            and predator.aggressive == st.session_state.search_aggressive
-            and predator.speed == st.session_state.search_development_speed
-            and predator.Moderate == st.session_state.search_development_speed
-            and predator.High == st.session_state.search_development_speed
-            and predator.Beige_Tan == st.session_state.search_colour
-            and predator.Reproduction_rate == st.session_state.search_development_speed
-            and predator.Pale_transparent == st.session_state.search_colour
-            and predator.Light_tan == st.session_state.search_colour
-            and predator.Pear_shaped == st.session_state.search_shape
-            and predator.Oval_to_teardrop == st.session_state.search_shape
-            and predator.Broad_oval == st.session_state.search_shape
-            and predator.Oval_slender == st.session_state.search_shape
-        
+            p.size == st.session_state.search_size and
+            p.shape == st.session_state.search_shape and
+            p.colour == st.session_state.search_colour and
+            p.aggressive == st.session_state.search_aggressive
         ):
-            found_predator = predator
+            found = p
             break
 
-    if found_predator:
-        st.success(f"Identified Predator: {found_predator.name}")
+    # ---------------- RESULT ----------------
+    if found:
+        st.success(f"Identified Predator: {found.name}")
 
         st.write("### Details")
-        st.write(f"Size: {found_predator.size}")
-        st.write(f"Shape: {found_predator.shape}")
-        st.write(f"Colour: {found_predator.colour}")
-        st.write(f"Aggressive: {found_predator.aggressive}")
-        st.write(f"Development Speed: {found_predator.speed}")
-        st.write(f"Moderate: {found_predator.Moderate}")
-        st.write(f"High: {found_predator.High}")
-        st.write(f"Beige/Tan: {found_predator.Beige_Tan}")
-        st.write(f"Reproduction Rate: {found_predator.Reproduction_rate}")
-        st.write(f"Pale/Transparent: {found_predator.Pale_transparent}")
-        st.write(f"Light Tan: {found_predator.Light_tan}")
-        st.write(f"Pear Shaped: {found_predator.Pear_shaped}")
-        st.write(f"Oval to Teardrop: {found_predator.Oval_to_teardrop}")
-        st.write(f"Broad Oval: {found_predator.Broad_oval}")    
-        st.write(f"Oval Slender: {found_predator.Oval_slender}")
-            
-
+        st.write(f"Size: {found.size}")
+        st.write(f"Shape: {found.shape}")
+        st.write(f"Colour: {found.colour}")
+        st.write(f"Aggressive: {found.aggressive}")
+        st.write(f"Development Speed: {found.development_speed}")
 
     else:
         st.error("No predator found")
 
+    # ---------------- RESET ----------------
     if st.button("🔄 New Search"):
         st.session_state.submitted = False
         st.rerun()
