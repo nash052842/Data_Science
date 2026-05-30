@@ -105,6 +105,18 @@ else:
             and predator.shape == st.session_state.search_shape
             and predator.colour == st.session_state.search_colour
             and predator.aggressive == st.session_state.search_aggressive
+            and predator.speed == st.session_state.search_development_speed
+            and predator.Moderate == st.session_state.search_development_speed
+            and predator.High == st.session_state.search_development_speed
+            and predator.Beige_Tan == st.session_state.search_colour
+            and predator.Reproduction_rate == st.session_state.search_development_speed
+            and predator.Pale_transparent == st.session_state.search_colour
+            and predator.Light_tan == st.session_state.search_colour
+            and predator.Pear_shaped == st.session_state.search_shape
+            and predator.Oval_to_teardrop == st.session_state.search_shape
+            and predator.Broad_oval == st.session_state.search_shape
+            and predator.Oval_slender == st.session_state.search_shape
+        
         ):
             found_predator = predator
             break
@@ -118,7 +130,18 @@ else:
         st.write(f"Colour: {found_predator.colour}")
         st.write(f"Aggressive: {found_predator.aggressive}")
         st.write(f"Development Speed: {found_predator.speed}")
-        
+        st.write(f"Moderate: {found_predator.Moderate}")
+        st.write(f"High: {found_predator.High}")
+        st.write(f"Beige/Tan: {found_predator.Beige_Tan}")
+        st.write(f"Reproduction Rate: {found_predator.Reproduction_rate}")
+        st.write(f"Pale/Transparent: {found_predator.Pale_transparent}")
+        st.write(f"Light Tan: {found_predator.Light_tan}")
+        st.write(f"Pear Shaped: {found_predator.Pear_shaped}")
+        st.write(f"Oval to Teardrop: {found_predator.Oval_to_teardrop}")
+        st.write(f"Broad Oval: {found_predator.Broad_oval}")    
+        st.write(f"Oval Slender: {found_predator.Oval_slender}")
+            
+
 
     else:
         st.error("No predator found")
